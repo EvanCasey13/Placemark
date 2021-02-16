@@ -1,7 +1,7 @@
 package org.wit.placemark.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_placemark.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
@@ -11,19 +11,27 @@ import org.wit.placemark.models.PlacemarkModel
 
 class MainActivity : AppCompatActivity(), AnkoLogger {
 
-    var placemark = PlacemarkModel()
+    var placemark = ArrayList<PlacemarkModel>()
+
+    val aPlacemark = PlacemarkModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_placemark)
 
         btnAdd.setOnClickListener() {
-            placemark.title = placemarkTitle.text.toString()
-            if (placemark.title.isNotEmpty()) {
+
+          aPlacemark.title = placemarkTitle.text.toString()
+
+            aPlacemark.description = placemarkDescription.text.toString()
+
+            if (aPlacemark.title.isNotEmpty() && aPlacemark.description.isNotEmpty()) {
+                placemark.add(aPlacemark.copy())
+
                 info("add Button Pressed: $placemark")
             }
             else {
-                toast ("Please Enter a title")
+                toast ("Please Enter a title & description")
             }
         }
     }
