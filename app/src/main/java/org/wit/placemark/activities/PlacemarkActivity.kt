@@ -24,23 +24,27 @@ class PlacemarkActivity : AppCompatActivity(), AnkoLogger {
         setContentView(R.layout.activity_placemark)
 
         app = application as MainApp
+        val titlePopReturn: String = getString(R.string.text_returnTitle)
 
         toolbarAdd.title = title
         setSupportActionBar(toolbarAdd)
+
+        if (intent.hasExtra("placemark_edit")) {
+            aPlacemark = intent.extras?.getParcelable<PlacemarkModel>("placemark_edit")!!
+            placemarkTitle.setText(aPlacemark.title)
+            placemarkDescription.setText(aPlacemark.description)
+        }
 
         btnAdd.setOnClickListener() {
             aPlacemark.title = placemarkTitle.text.toString()
             aPlacemark.description = placemarkDescription.text.toString()
             if (aPlacemark.title.isNotEmpty()) {
-                app.placemark.add(aPlacemark.copy())
+                app.placemarks.create(aPlacemark.copy())
                 info("add Button Pressed: $aPlacemark}")
-                for (i in app.placemark.indices) {
-                    info("Placemark[$i]:${app.placemark[i]}")
-                }
                 setResult(AppCompatActivity.RESULT_OK)
                 finish()
             } else {
-                toast("Please Enter a title")
+             toast(titlePopReturn)
             }
         }
     }
@@ -53,6 +57,7 @@ class PlacemarkActivity : AppCompatActivity(), AnkoLogger {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_cancel -> startActivityForResult<PlacemarkListActivity>(0)
+
         }
         return super.onOptionsItemSelected(item)
     }

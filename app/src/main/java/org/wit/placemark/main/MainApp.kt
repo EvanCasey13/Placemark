@@ -3,11 +3,13 @@ package org.wit.placemark.main
 import android.app.Application
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
+import org.wit.placemark.models.PlacemarkMemStore
 import org.wit.placemark.models.PlacemarkModel
 
 class MainApp : Application(), AnkoLogger {
 
-    val placemark = ArrayList<PlacemarkModel>()
+    //val placemarks = Arraylist<PlacemarkModel>()
+    val placemarks = PlacemarkMemStore()
 
     override fun onCreate() {
         super.onCreate()
