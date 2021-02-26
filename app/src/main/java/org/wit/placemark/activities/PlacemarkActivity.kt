@@ -24,28 +24,34 @@ class PlacemarkActivity : AppCompatActivity(), AnkoLogger {
         setContentView(R.layout.activity_placemark)
 
         app = application as MainApp
+        var edit = false
         val titlePopReturn: String = getString(R.string.text_returnTitle)
 
         toolbarAdd.title = title
         setSupportActionBar(toolbarAdd)
 
         if (intent.hasExtra("placemark_edit")) {
+            edit = true
             aPlacemark = intent.extras?.getParcelable<PlacemarkModel>("placemark_edit")!!
             placemarkTitle.setText(aPlacemark.title)
             placemarkDescription.setText(aPlacemark.description)
+            btnAdd.setText(R.string.button_savePlacemark)
         }
 
         btnAdd.setOnClickListener() {
             aPlacemark.title = placemarkTitle.text.toString()
             aPlacemark.description = placemarkDescription.text.toString()
-            if (aPlacemark.title.isNotEmpty()) {
-                app.placemarks.create(aPlacemark.copy())
-                info("add Button Pressed: $aPlacemark}")
-                setResult(AppCompatActivity.RESULT_OK)
-                finish()
+            if (aPlacemark.title.isEmpty()) {
+                toast(titlePopReturn)
             } else {
-             toast(titlePopReturn)
+                if (edit){
+                    app.placemarks.update(aPlacemark.copy())
+                } else {
+                    app.placemarks.create(aPlacemark.copy())
+                }
             }
+            info("add Button Pressed: $placemarkTitle")
+            finish()
         }
     }
 
