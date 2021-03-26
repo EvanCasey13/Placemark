@@ -17,6 +17,10 @@ class PlacemarkMemStore : PlacemarkStore, AnkoLogger {
         return placemarks
     }
 
+    override fun delete(placemark: PlacemarkModel) {
+        placemarks.remove(placemark)
+    }
+
     override fun create(placemark: PlacemarkModel) {
         placemark.id = getId()
         placemarks.add(placemark)
